@@ -3,20 +3,23 @@ import { useState } from "react";
 import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import axios from "axios";
 import { appContext } from "../App";
 export default function Register() {
-  const { user, setUser, users, setUsers,cart } = useContext(appContext);
+  const { user, setUser, users, setUsers, cart } = useContext(appContext);
   const [msg, setMsg] = useState();
   const Navigate = useNavigate();
-  const handleSubmit = () => {
-    const found = users.find((value) => value.email === user.email);
-    if (found) {
-      setMsg("User already exists");
-    } else {
-      setUsers([...users, user]);
-      setMsg();
-      Object.keys(cart).length > 0 ? Navigate("/cart") : Navigate("/");
+  const API = process.env.REACT_APP_API;
+  const handleSubmit = async () => {
+    try {
+      const url = `${API}/api/user/register`;
+      const result = await axios.post(url, user);
+      Navigate("/login")
+    } catch (err) {
+      console.log(err);
+      setMsg("Something went wrong");
     }
+    const found = users.find((value) => value.email === user.email);
   };
   const handleDelete = (email) => {
     setUsers(users.filter((value) => value.email != email));
@@ -44,7 +47,7 @@ export default function Register() {
           <input
             type="password"
             placeholder="New password"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            onChange={(e) => setUser({ ...user, pass: e.target.value })}
           ></input>
         </p>
         <p>
@@ -53,15 +56,6 @@ export default function Register() {
         <p>
           <Link to="../login">Already a member? Log In</Link>
         </p>
-      </div>
-      <div>
-        {users &&
-          users.map((value, index) => (
-            <li>
-              {value.name}-{value.email}-{value.password}
-              <button onClick={() => handleDelete(value.email)}>Delete</button>
-            </li>
-          ))}
       </div>
     </div>
   );
