@@ -3,18 +3,20 @@ import { Link } from "react-router-dom";
 import { appContext } from "../App";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 export default function Login() {
   const Navigate = useNavigate();
   const { user, setUser, users, setUsers, cart } = useContext(appContext);
   const [msg, setMsg] = useState();
-  const handleSubmit = () => {
-    const found = users.find(
-      (value) => value.email === user.email && value.password === user.password
-    );
-    if (found) {
-      Object.keys(cart).length > 0 ? Navigate("/cart") : Navigate("/");
-    } else {
-      setMsg("Invalid Credentials");
+  const API = process.env.REACT_APP_API;
+  const handleSubmit = async () => {
+    try {
+      const url = `${API}/api/user/login`;
+      const result = await axios.post(url, user);
+      Navigate("/");
+    } catch (err) {
+      console.log(err);
+      setMsg("Something went wrong");
     }
   };
 
@@ -33,7 +35,7 @@ export default function Login() {
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          onChange={(e) => setUser({ ...user, pass: e.target.value })}
         ></input>
       </p>
       <p>
