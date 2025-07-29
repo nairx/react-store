@@ -16,20 +16,20 @@ export default function Products() {
   return (
     <>
       <div className="App-Products-Row">
-        {products.map((value, index) => (
-          <div key={index} className="App-Products-Box">
+        {products.map((value) => (
+          <div key={value._id} className="App-Products-Box">
             <img src={value.url} />
             <h3>{value.name}</h3>
             <p>{value.desc}</p>
             <h4>{value.price}</h4>
-            {cart[value.id] > 0 ? (
+            {cart[value._id] > 0 ? (
               <div>
-                <button onClick={() => decrement(value.id)}>-</button>
-                {cart[value.id]}
-                <button onClick={() => increment(value.id)}>+</button>
+                <button onClick={() => decrement(value._id)}>-</button>
+                {cart[value._id]}
+                <button onClick={() => increment(value._id)}>+</button>
               </div>
             ) : (
-              <button onClick={() => addToCart(value.id)}>Add to Cart</button>
+              <button onClick={() => addToCart(value._id)}>Add to Cart</button>
             )}
           </div>
         ))}

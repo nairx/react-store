@@ -15,9 +15,8 @@ export default function Header() {
       <div>
         <Link to={"/"}>Home</Link>-
         <Link to={"/cart"}>Cart({items.length})</Link>-
-        {myOrder.length > 0 && (
-          <Link to={"/orders"}>Orders({myOrder.length})</Link>
-        )}
+        <Link to={"/orders"}>Orders</Link>
+
         {user.email === "" || !user.email ? (
           <Link to={"/login"}>Login</Link>
         ) : (
