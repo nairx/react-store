@@ -18,7 +18,7 @@ export default function Products() {
       <div className="App-Products-Row">
         {products.map((value, index) => (
           <div key={index} className="App-Products-Box">
-            <img src={value.imgUrl} />
+            <img src={value.url} />
             <h3>{value.name}</h3>
             <p>{value.desc}</p>
             <h4>{value.price}</h4>
